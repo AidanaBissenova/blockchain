@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tech</title>
+    <style>
+        .form{
+            /* margin-top: 10px; */
+            padding: 10px;
+            border:5px solid green;
+            margin-left: 20px;
+            width: 20%;
+            background-color: rgba(158, 158, 5, 0.719);
+        }
+        h1{
+            margin:0;
+        }
+        .popup{
+            display: none;
+        }
+        .popup__body{
+            min-height: 100%;
+            /* display: flex; */
+            /* align-items: center; */
+            /* justify-content: center; */
+
+        }
+        .popup__content{
+            /* max-width: 800px; */
+            position: relative;
+        }
+        .popup__close{
+            position: absolute;
+            right: 10px;
+            text-decoration: none;
+            color: black;
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight: 700;
+        }
+        #first,
+        #second,
+        #third{
+            top: 10%;
+            left: 12%;
+            width: 8%;
+            position: absolute;
+            display: none;
+        }
+        #status{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="form">
+        <div class="order">
+            <h1>Сделайте заказ</h1>
+                <p class="coffee-p">Сорт кофе</p>
+                <select  onchange="popup_btn()" id="coffee">
+                    <option  value="0">выберите кофе</option>
+                    <option  value="1">Необжаренный</option>
+                    <option value="2">Колумбийский</option>
+                    <option  value="3">Эфиопский</option>
+                </select>
+                <div class="images">
+                    <img id="first" src="/img/необжаренный.jpg" alt="">
+                    <img id="second" src="/img/колумбийский.jfif" alt="">
+                    <img id="third" src="/img/эфиоп.jfif" alt="">
+                </div>
+                <div id="popup" class="popup">
+                    <div class="popup__body">
+                        <div class="popup__content">
+                            <a href="" class="popup__close">X</a>
+                            <p class="box-p">Кол-во коробок</p>
+                            <select id="box">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="40">40</option>
+                                <option value="50">50</option>
+                            </select>
+                            <p class="weight-p">Вес</p>
+                            <select id="weight">
+                                <option value="10">10кг</option>
+                                <option value="20">20кг</option>
+                                <option value="30">30кг</option>
+                                <option value="40">40кг</option>
+                                <option value="50">50кг</option>
+                            </select>
+                            <p class="departure-date-p">Дата отправки</p>
+                            <input class="departure-date" type="date">
+                            <p class="arrival-date">Дата прибытия</p>
+                            <input class="arrival-date" type="date">
+                            <div class="submit-wrapper">
+                                <button type="button" id="submit" onclick="submit_btn()">Отправить</button>
+                            </div>
+                            <div id="status">
+                                <button onclick="btn()" id="ask">
+                                    STATUS
+                                </button>
+                            </div>
+                                <span id="root"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <script>
+        
+        var imgg = document.getElementById('coffee');
+        
+        var submits = document.getElementById('status');
+        submit.onclick = function(){
+            submits.style.display="block";
+        }
+        var popup = document.getElementById('popup');
+        function popup_btn(){
+            popup.style.display = "block";
+            if(imgg.value == 1){
+                first.style.display="block";    
+                second.style.display="none";    
+                third.style.display="none";    
+            }
+           else if(imgg.value == 2){
+            first.style.display="none";    
+            second.style.display="block";    
+            third.style.display="none";    
+            }
+           else if(imgg.value == 3){
+                third.style.display="block";  
+                second.style.display="none";    
+                first.style.display="none";    
+
+            }
+            
+        }
+        function btn(){
+        fetch("https://reqres.in/api/users",
+    {
+        method: 'POST',
+        headers:{
+            "Content-type":"application/json"
+        },
+        body:JSON.stringify({
+            Status:['пакуем','в дороге','на месте'] 
+        })
+    })
+
+    .then(res => res.json())
+    .then(data =>
+        document.getElementById('root').innerHTML =
+        JSON.stringify(data['Status'][Math.floor(Math.random()*data['Status'].length)])
+        )
+    }
+
+    </script>
+</body>
+</html>
